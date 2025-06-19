@@ -1,0 +1,274 @@
+﻿<Window x:Class="AgenteTickets.Views.ConfigurationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:viewmodels="clr-namespace:AgenteTickets.ViewModels"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        x:Name="ConfigurationForm"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanMinimize"
+        Title="Configuración"
+        Height="450"
+        Width="600">
+    <Window.Resources>
+        <viewmodels:ConfigurationVM x:Key="ViewModel"/>
+    </Window.Resources>
+    <Window.DataContext>
+        <Binding Source="{StaticResource ViewModel}"/>
+    </Window.DataContext>
+    <Grid>
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="5"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="5"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <GroupBox Header="Lectura de archivos">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="375"/>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="50"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        HorizontalAlignment="Right"
+                        Content="Tipo de archivo:"/>
+                    <ComboBox
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="3"
+                        ItemsSource="{Binding FileTypes}"
+                        SelectedValue="{Binding FileReaderConfig.FileType}"
+                        DisplayMemberPath="Text"
+                        SelectedValuePath="Value"/>
+
+                    <Label
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        HorizontalAlignment="Right"
+                        Content="Ubicación archivos:"/>
+                    <TextBox
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        VerticalContentAlignment="Center"
+                        IsReadOnly="True"
+                        Text="{Binding FileReaderConfig.Path}"/>
+                    <Button
+                        Grid.Row="2"
+                        Grid.Column="3"
+                        Content="..."
+                        Command="{Binding FindFilePathCommand}"/>
+
+                    <Label
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        HorizontalAlignment="Right"
+                        Content="Ubicación respuestas:"/>
+                    <TextBox
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        IsReadOnly="True"
+                        VerticalContentAlignment="Center"
+                        Text="{Binding FileReaderConfig.ResponsePath}"/>
+                    <Button
+                        Grid.Row="4"
+                        Grid.Column="3"
+                        Content="..."
+                        Command="{Binding FindResponsePathCommand}"/>
+                </Grid>
+            </GroupBox>
+
+            <GroupBox Grid.Row="2" Header="API Autofactura">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="430"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        HorizontalAlignment="Right"
+                        Content="URL API:"/>
+                    <TextBox
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        VerticalContentAlignment="Center"
+                        Text="{Binding SelfbillingConfig.ApiUrl}"/>
+
+                    <Label
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        HorizontalAlignment="Right"
+                        Content="Usuario API:"/>
+                    <TextBox
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        VerticalContentAlignment="Center"
+                        Text="{Binding SelfbillingConfig.ApiUser}"/>
+
+                    <Label
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        HorizontalAlignment="Right"
+                        Content="Contraseña API:"/>
+                    <PasswordBox
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        VerticalContentAlignment="Center"
+                        x:Name="APIPassword">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="LostFocus">
+                                <i:CallMethodAction
+                            TargetObject="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=PasswordBox}, Path=DataContext}"
+                            MethodName="APIPassword_LostFocus"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </PasswordBox>
+
+                    <Label
+                        Grid.Row="6"
+                        Grid.Column="0"
+                        HorizontalAlignment="Right"
+                        Content="Serie ubicación:"/>
+                    <TextBox
+                        Grid.Row="6"
+                        Grid.Column="1"
+                        MaxLength="10"
+                        VerticalContentAlignment="Center"
+                        Text="{Binding SelfbillingConfig.Serie}">
+                        <TextBox.Style>
+                            <Style TargetType="TextBox">
+                                <Setter Property="CharacterCasing" Value="Upper"/>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
+                </Grid>
+            </GroupBox>
+
+            <GroupBox Grid.Row="4" Header="Proceso de carga tickets">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="350"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        HorizontalAlignment="Right"
+                        Content="Intervalo de carga (5 - 60 minutos):"/>
+                    <xctk:TimeSpanUpDown
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        ShowDays="False"
+                        Minimum="00:05:00"
+                        Maximum="01:00:00"
+                        Value="{Binding SelfbillingConfig.LoadIntervalTickets}"/>
+
+                    <!--<Label
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        HorizontalAlignment="Right"
+                        Content="Hora carga cancelaciones (24h):"/>
+
+                    <xctk:TimeSpanUpDown
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        ShowDays="False"
+                        Minimum="00:00:00"
+                        Maximum="23:59:59"
+                        Value="{Binding SelfbillingConfig.TimeLoadCancellations}"/>-->
+
+                    <!--<Label
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        HorizontalAlignment="Right"
+                        Content="Cargar cancelaciones del día anterior:"/>
+
+                    <CheckBox
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        IsChecked="{Binding SelfbillingConfig.LoadPreviousDayCancellations}"/>-->
+                </Grid>
+            </GroupBox>
+
+            <Grid Grid.Row="6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <Button
+                    Grid.Column="1"
+                    Content="Cancelar"
+                    Command="{Binding CloseCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"/>
+
+                <Button
+                    Grid.Column="3"
+                    Content="Guardar"
+                    Command="{Binding SaveCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"/>
+            </Grid>
+        </Grid>
+    </Grid>
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction
+                Command="{Binding InitializeCommand}"
+                CommandParameter="{Binding ElementName=ConfigurationForm}"/>
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Closing">
+            <i:CallMethodAction
+                MethodName="Window_Closing"
+                TargetObject="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+</Window>

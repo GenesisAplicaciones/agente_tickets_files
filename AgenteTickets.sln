@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.34031.81
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgenteTickets", "AgenteTickets\AgenteTickets.csproj", "{D1C15B14-6E5E-4D73-8253-D3BF7F53F944}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgenteTickets.CustomActions", "AgenteTickets.CustomActions\AgenteTickets.CustomActions.csproj", "{210595CC-54F9-44C3-A867-74D9E2DEAEE3}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "AgenteTickets.Installer", "AgenteTickets.Installer\AgenteTickets.Installer.vdproj", "{0FB26F2F-43B0-4278-A1C0-C3DF3B46743F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D1C15B14-6E5E-4D73-8253-D3BF7F53F944}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1C15B14-6E5E-4D73-8253-D3BF7F53F944}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1C15B14-6E5E-4D73-8253-D3BF7F53F944}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1C15B14-6E5E-4D73-8253-D3BF7F53F944}.Release|Any CPU.Build.0 = Release|Any CPU
+		{210595CC-54F9-44C3-A867-74D9E2DEAEE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{210595CC-54F9-44C3-A867-74D9E2DEAEE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{210595CC-54F9-44C3-A867-74D9E2DEAEE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{210595CC-54F9-44C3-A867-74D9E2DEAEE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0FB26F2F-43B0-4278-A1C0-C3DF3B46743F}.Debug|Any CPU.ActiveCfg = Debug
+		{0FB26F2F-43B0-4278-A1C0-C3DF3B46743F}.Release|Any CPU.ActiveCfg = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DD3D5563-964C-496E-B7E4-6F224DCAEABA}
+	EndGlobalSection
+EndGlobal

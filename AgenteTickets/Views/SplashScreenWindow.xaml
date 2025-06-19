@@ -1,0 +1,71 @@
+﻿<customwindows:LoaderWindow
+    x:Class="AgenteTickets.Views.SplashScreenWindow"
+    xmlns:customwindows="clr-namespace:ACTools.NetFramework.Controls;assembly=ACTools.NetFramework"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodels="clr-namespace:ACTools.NetFramework.ViewModels;assembly=ACTools.NetFramework"
+    mc:Ignorable="d"
+    Title="Splash"
+    WindowStartupLocation="CenterScreen"
+    ResizeMode="CanMinimize"
+    Height="250"
+    Width="500">
+    <customwindows:LoaderWindow.Resources>
+        <viewmodels:LoaderViewModel x:Key="ViewModel"/>
+    </customwindows:LoaderWindow.Resources>
+    <customwindows:LoaderWindow.DataContext>
+        <Binding Source="{StaticResource ViewModel}"/>
+    </customwindows:LoaderWindow.DataContext>
+    <Grid>
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="5"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid
+                Grid.Row="0"
+                HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Image
+                    Grid.Column="0"
+                    Source="{DynamicResource logo_gap}"/>
+
+                <TextBlock
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    FontSize="24"
+                    FontWeight="DemiBold"
+                    Text="enesis Aplicaciones"/>
+            </Grid>
+
+            <StackPanel
+                Grid.Row="2"
+                VerticalAlignment="Center">
+                <TextBlock
+                    Margin="0 0 0 5"
+                    Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=customwindows:LoaderWindow}, Path=ModalText}"/>
+
+                <ProgressBar
+                    Margin="0 0 0 10"
+                    IsIndeterminate="True"
+                    Height="15"/>
+
+                <Button
+                    Grid.Row="3"
+                    HorizontalAlignment="Center"
+                    Visibility="{Binding ButtonCancelVisibility}"
+                    Command="{Binding AbortThreadCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=customwindows:LoaderWindow}}"
+                    Content="Cancelar"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</customwindows:LoaderWindow>

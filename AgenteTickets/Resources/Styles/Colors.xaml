@@ -1,0 +1,9 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Color x:Key="Primary">#444444</Color>
+    <Color x:Key="Secundary">#FFFFFF</Color>
+
+    <Color x:Key="ColorTextTableHeader">#FFFFFF</Color>
+    <Color x:Key="ColorTextTableBody">#000000</Color>
+    <Color x:Key="ColorTextTableBodyHover">#000000</Color>
+</ResourceDictionary>

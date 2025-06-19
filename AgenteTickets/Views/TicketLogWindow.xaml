@@ -1,0 +1,249 @@
+﻿<Window x:Class="AgenteTickets.Views.TicketLogWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:viewmodels="clr-namespace:AgenteTickets.ViewModels"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        x:Name="TicketLog"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        Title="Bitácora de tickets"
+        Height="600"
+        Width="920">
+    <Window.Resources>
+        <viewmodels:TicketLogVM x:Key="ViewModel"/>
+    </Window.Resources>
+    <Window.DataContext>
+        <Binding Source="{StaticResource ViewModel}"/>
+    </Window.DataContext>
+    <Grid>
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="5"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="5"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <WrapPanel Grid.Row="0">
+                <StackPanel Width="170" Margin="0 0 5 0">
+                    <Label
+                        HorizontalAlignment="Left"
+                        Content="Serie ticket:"/>
+                    <ComboBox
+                        Height="24"
+                        DisplayMemberPath="Text"
+                        SelectedValuePath="Value"
+                        ItemsSource="{Binding Series}"
+                        SelectedValue="{Binding SearchData.TicketSerie}"/>
+                </StackPanel>
+
+                <StackPanel Width="170" Margin="0 0 5 0">
+                    <Label
+                        HorizontalAlignment="Left"
+                        Content="Folio ticket:"/>
+                    <TextBox
+                        Height="24"
+                        MaxLength="30"
+                        VerticalContentAlignment="Center"
+                        Text="{Binding SearchData.TicketFolio}"/>
+                </StackPanel>
+
+                <StackPanel Width="170" Margin="0 0 5 0">
+                    <Label Content="Fecha ticket:"/>
+                    <DatePicker
+                        SelectedDate="{Binding SearchData.TicketDate}"/>
+                </StackPanel>
+
+                <StackPanel Width="170" Margin="0 0 5 0">
+                    <Label
+                        HorizontalAlignment="Left"
+                        Content="Importe ticket:"/>
+                    <xctk:DecimalUpDown
+                        Height="24"
+                        Value="{Binding SearchData.TicketAmount}"/>
+                </StackPanel>
+
+                <StackPanel Width="170" Margin="0 0 5 0">
+                    <Label
+                        HorizontalAlignment="Left"
+                        Content="Código estatus ticket:"/>
+                    <ComboBox
+                        Height="24"
+                        DisplayMemberPath="Text"
+                        SelectedValuePath="Value"
+                        ItemsSource="{Binding StatusCodes}"
+                        SelectedValue="{Binding SearchData.TicketStatusCode}"/>
+                </StackPanel>
+
+                <StackPanel Width="170" Margin="0 0 5 0">
+                    <Label
+                        HorizontalAlignment="Left"
+                        Content="Método procesamiento:"/>
+                    <ComboBox
+                        Height="24"
+                        DisplayMemberPath="Text"
+                        SelectedValuePath="Value"
+                        ItemsSource="{Binding Methods}"
+                        SelectedValue="{Binding SearchData.TypeMethod}"/>
+                </StackPanel>
+
+                <StackPanel Width="170" Margin="0 0 5 0">
+                    <Label
+                        HorizontalAlignment="Left"
+                        Content="Acción realizada:"/>
+                    <ComboBox
+                        Height="24"
+                        DisplayMemberPath="Text"
+                        SelectedValuePath="Value"
+                        ItemsSource="{Binding Actions}"
+                        SelectedValue="{Binding SearchData.TypeAction}"/>
+                </StackPanel>
+
+                <StackPanel Width="170" Margin="0 0 5 0">
+                    <Label
+                        HorizontalAlignment="Left"
+                        Content="Estatus acción realizada:"/>
+                    <ComboBox
+                        Height="24"
+                        DisplayMemberPath="Text"
+                        SelectedValuePath="Value"
+                        ItemsSource="{Binding StatusActionOptions}"
+                        SelectedValue="{Binding SearchData.StatusAction}"/>
+                </StackPanel>
+
+                <StackPanel Width="170" Margin="0 0 5 0">
+                    <Label
+                        HorizontalAlignment="Left"
+                        Content="Código respuesta API:"/>
+                    <ComboBox
+                        Height="24"
+                        DisplayMemberPath="Text"
+                        SelectedValuePath="Value"
+                        ItemsSource="{Binding ApiResponseCodes}"
+                        SelectedValue="{Binding SearchData.ApiResponseCode}"/>
+                </StackPanel>
+
+                <StackPanel Width="400" Margin="0 0 5 0">
+                    <Label
+                        HorizontalAlignment="Left"
+                        Content="Mensaje bitácora:"/>
+                    <TextBox
+                        Height="24"
+                        MaxLength="600"
+                        VerticalContentAlignment="Center"
+                        Text="{Binding SearchData.Message}"/>
+                </StackPanel>
+
+                <Button
+                    VerticalAlignment="Bottom"
+                    Content="Buscar"
+                    Command="{Binding SearchCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"/>
+            </WrapPanel>
+
+            <DataGrid
+                Grid.Row="2"
+                Style="{DynamicResource TextTable}"
+                ItemsSource="{Binding TicketLogs}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        IsReadOnly="True"
+                        Width="Auto"
+                        Header="Fecha"
+                        CellStyle="{DynamicResource CellTextCenter}"
+                        Binding="{Binding Id, StringFormat='dd/MM/yyyy HH:mm:ss'}"/>
+                    
+                    <DataGridTextColumn
+                        IsReadOnly="True"
+                        Width="Auto"
+                        Header="Serie ticket"
+                        CellStyle="{DynamicResource CellTextCenter}"
+                        Binding="{Binding TicketSerie}"/>
+
+                    <DataGridTextColumn
+                        IsReadOnly="True"
+                        Width="Auto"
+                        Header="Folio ticket"
+                        CellStyle="{DynamicResource CellTextCenter}"
+                        Binding="{Binding TicketFolio}"/>
+
+                    <DataGridTextColumn
+                        IsReadOnly="True"
+                        Width="Auto"
+                        Header="Fecha ticket"
+                        CellStyle="{DynamicResource CellTextCenter}"
+                        Binding="{Binding TicketDate, StringFormat='dd/MM/yyyy'}"/>
+
+                    <DataGridTextColumn
+                        IsReadOnly="True"
+                        Width="Auto"
+                        Header="Importe ticket"
+                        CellStyle="{DynamicResource CellTextRight}"
+                        Binding="{Binding TicketAmount, StringFormat={}{0:C}}"/>
+
+                    <DataGridTextColumn
+                        IsReadOnly="True"
+                        Width="Auto"
+                        Header="Código estatus ticket"
+                        CellStyle="{DynamicResource CellTextCenter}"
+                        Binding="{Binding TicketStatusCode}"/>
+
+                    <DataGridTextColumn
+                        IsReadOnly="True"
+                        Width="Auto"
+                        Header="Método procedimiento"
+                        CellStyle="{DynamicResource CellTextCenter}"
+                        Binding="{Binding TypeMethod, Converter={StaticResource TypeMethodToTextConverter}}"/>
+
+                    <DataGridTextColumn
+                        IsReadOnly="True"
+                        Width="Auto"
+                        Header="Acción realizada"
+                        CellStyle="{DynamicResource CellTextCenter}"
+                        Binding="{Binding TypeAction, Converter={StaticResource TypeActionToTextConverter}}"/>
+
+                    <DataGridTextColumn
+                        IsReadOnly="True"
+                        Width="Auto"
+                        Header="Estatus acción realizada"
+                        CellStyle="{DynamicResource CellTextCenter}"
+                        Binding="{Binding StatusAction, Converter={StaticResource StatusActionToTextConverter}}"/>
+
+                    <DataGridTextColumn
+                        IsReadOnly="True"
+                        Width="Auto"
+                        Header="Código respuesta API"
+                        CellStyle="{DynamicResource CellTextCenter}"
+                        Binding="{Binding ApiResponseCode}"/>
+
+                    <DataGridTextColumn
+                        IsReadOnly="True"
+                        Width="Auto"
+                        Header="Mensaje bitácora"
+                        Binding="{Binding Message}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <Grid Grid.Row="4">
+                <Button
+                    Grid.Column="1"
+                    Content="Cerrar"
+                    Command="{Binding CloseCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"/>
+            </Grid>
+        </Grid>
+    </Grid>
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction
+                Command="{Binding InitializeCommand}"
+                CommandParameter="{Binding ElementName=TicketLog}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+</Window>
