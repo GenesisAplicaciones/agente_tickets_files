@@ -3,10 +3,167 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local="clr-namespace:AgenteTickets.Views"
+        xmlns:viewmodels="clr-namespace:AgenteTickets.ViewModels"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="PaymentMethodConfigWindow" Height="450" Width="800">
+        x:Name="PaymentMethodConfig"
+        WindowStartupLocation="CenterScreen"
+        Title="Configuración de formas de pago"
+        Height="450"
+        Width="600">
+    <Window.Resources>
+        <viewmodels:PaymentMethodConfigVM x:Key="ViewModel"/>
+    </Window.Resources>
+    <Window.DataContext>
+        <Binding Source="{StaticResource ViewModel}"/>
+    </Window.DataContext>
     <Grid>
-        
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="5"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <StackPanel>
+                    <Label Content="Clave POS:"/>
+                    <TextBox
+                        MaxLength="20"
+                        Text="{Binding  PaymentMethodConfig.POSCode}"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="2">
+                    <Label Content="Clave SAT:"/>
+                    <TextBox
+                        MaxLength="2"
+                        Text="{Binding  PaymentMethodConfig.TaxCode}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewTextInput">
+                                <i:CallMethodAction
+                MethodName="Integer_PreviewTextInput"
+                TargetObject="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </TextBox>
+                </StackPanel>
+
+                <StackPanel Grid.Row="4">
+                    <Label Content="Descripción:"/>
+                    <TextBox
+                        MaxLength="30"
+                        Text="{Binding  PaymentMethodConfig.Description}"/>
+                </StackPanel>
+
+                <Grid Grid.Row="6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button
+                        Grid.Column="1"
+                        Content="Limpiar"
+                        Command="{Binding ClearCommand}"/>
+
+                    <Button
+                        Grid.Column="3"
+                        Content="Guardar"
+                        Command="{Binding SaveCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"/>
+                </Grid>
+            </Grid>
+
+            <DataGrid
+                Grid.Column="2"
+                Style="{DynamicResource TextTable}"
+                ItemsSource="{Binding PaymentMethodsConfig}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        IsReadOnly="True"
+                        Width="Auto"
+                        Header="Clave POS"
+                        CellStyle="{DynamicResource CellTextCenter}"
+                        Binding="{Binding POSCode}"/>
+
+                    <DataGridTextColumn
+                        IsReadOnly="True"
+                        Width="Auto"
+                        Header="Clave SAT"
+                        CellStyle="{DynamicResource CellTextCenter}"
+                        Binding="{Binding TaxCode}"/>
+
+                    <DataGridTextColumn
+                        IsReadOnly="True"
+                        Width="*"
+                        Header="Descripción"
+                        Binding="{Binding Description}"/>
+                    
+                    <DataGridTemplateColumn
+                        Width="80"
+                        Header="Acción">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button
+                                    Content="Eliminar"
+                                    Background="Transparent"
+                                    BorderBrush="Red"
+                                    Foreground="Red"
+                                    Padding="2"
+                                    Width="60"
+                                    Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}, Path=DataContext.DeleteCommand}">
+                                    <Button.CommandParameter>
+                                        <MultiBinding
+                                            Converter="{StaticResource MultiBindingConverter}">
+                                            <Binding
+                                                RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Window}"/>
+                                            <Binding Path="Id"/>
+                                        </MultiBinding>
+                                    </Button.CommandParameter>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <Button
+                Grid.Row="2"
+                Grid.ColumnSpan="3"
+                Content="Cerrar"
+                Command="{Binding CloseCommand}"
+                CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"/>
+        </Grid>
     </Grid>
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction
+                Command="{Binding InitializeCommand}"
+                CommandParameter="{Binding ElementName=PaymentMethodConfig}"/>
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Closing">
+            <i:CallMethodAction
+                MethodName="Window_Closing"
+                TargetObject="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
 </Window>

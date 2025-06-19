@@ -15,6 +15,7 @@ using log4net;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
@@ -108,10 +109,18 @@ namespace AgenteTickets.ViewModels
             {
                 return ("Ubicación archivos", "Campo requerido.");
             }
+            else if (!Directory.Exists(FileReaderConfig.Path))
+            {
+                return ("Ubicación archivos", "No existe.");
+            }
 
             if (string.IsNullOrWhiteSpace(FileReaderConfig.ResponsePath))
             {
                 return ("Ubicación respuestas", "Campo requerido.");
+            }
+            else if (!Directory.Exists(FileReaderConfig.ResponsePath))
+            {
+                return ("Ubicación respuestas", "No existe.");
             }
 
             return (null, null);
@@ -137,11 +146,6 @@ namespace AgenteTickets.ViewModels
             if (test)
             {
                 return (null, null);
-            }
-
-            if (string.IsNullOrWhiteSpace(SelfbillingConfig.Serie))
-            {
-                return ("Serie ubicación", "Campo requerido.");
             }
 
             return (null, null);

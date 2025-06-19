@@ -29,6 +29,19 @@ namespace AgenteTickets.AppDataBase.DAO
             });
         }
 
+        public static bool Create(int? code, string message, TypeMethod typeMethod, TypeAction typeAction)
+        {
+            return Create(new TicketLog
+            {
+                Id = DateTime.Now,
+                TypeMethod = typeMethod,
+                TypeAction = typeAction,
+                StatusAction = StatusAction.NOT_COMPLETED,
+                ApiResponseCode = code,
+                Message = message,
+            });
+        }
+
         public static List<SelectOption<string>> GetSeries()
         {
             using (ISession session = AppDBInstance.OpenSession())
@@ -61,10 +74,12 @@ namespace AgenteTickets.AppDataBase.DAO
         {
             using (ISession session = AppDBInstance.OpenSession())
             {
+                DateTime date = search.Id ?? DateTime.Today;
                 return (from x in session.Query<TicketLog>()
-                        where (search.TicketSerie == "" || x.TicketSerie == search.TicketSerie) &&
+                        where (search.Id == null || (x.Id >= date && x.Id <= date.AddDays(1).AddSeconds(-1))) &&
+                        (search.TicketSerie == "" || x.TicketSerie == search.TicketSerie) &&
                         (search.TicketFolio == "" || x.TicketFolio == search.TicketFolio) &&
-                        x.TicketDate == search.TicketDate &&
+                        (search.TicketDate == null || x.TicketDate == search.TicketDate) &&
                         (search.TicketAmount == null || x.TicketAmount == search.TicketAmount) &&
                         (search.TicketStatusCode == "" || x.TicketStatusCode == search.TicketStatusCode) &&
                         (search.TypeAction == TypeAction.NONE || x.TypeAction == search.TypeAction) &&
@@ -73,7 +88,7 @@ namespace AgenteTickets.AppDataBase.DAO
                         (search.ApiResponseCode == -1 || x.ApiResponseCode == search.ApiResponseCode) &&
                         x.Message.Contains(search.Message)
                         orderby x.Id descending
-                        select x).ToList();
+                        select x).Take(1000).ToList();
             }
         }
 
@@ -99,7 +114,7 @@ namespace AgenteTickets.AppDataBase.DAO
             {
                 return (from x in session.Query<TicketLog>()
                         where x.TypeAction == typeAction
-                        select (DateTime?)x.TicketDate).Max();
+                        select x.TicketDate).Max();
             }
         }
     }

@@ -14,6 +14,7 @@ namespace AgenteTickets.ClientData
             {
                 case FileType.AlohaXML:
                     return AlohaXML.DAO.TicketDAO.Get(path, serie, paymentMethodsConfig);
+                case FileType.NONE:
                 default:
                     return null;
             }
@@ -41,7 +42,7 @@ namespace AgenteTickets.ClientData
 
             if (code == 200)
             {
-                destFileName = Path.Combine(destFileName, dataInfo.Ticket.TicketDate.Year.ToString(), dataInfo.Ticket.TicketDate.Month.ToString(), dataInfo.Ticket.TicketDate.Day.ToString());
+                destFileName = Path.Combine(destFileName, dataInfo.Ticket.TicketDate.Year.ToString(), dataInfo.Ticket.TicketDate.Month.ToString().PadLeft(2, '0'), dataInfo.Ticket.TicketDate.Day.ToString().PadLeft(2, '0'));
             }
 
             _ = Directory.CreateDirectory(destFileName);

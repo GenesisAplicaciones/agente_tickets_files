@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         x:Name="TicketLog"
         WindowStartupLocation="CenterScreen"
-        WindowState="Maximized"
+        ResizeMode="CanMinimize"
         Title="Bitácora de tickets"
         Height="600"
         Width="920">
@@ -30,6 +30,12 @@
             </Grid.RowDefinitions>
 
             <WrapPanel Grid.Row="0">
+                <StackPanel Width="170" Margin="0 0 5 0">
+                    <Label Content="Fecha envío:"/>
+                    <DatePicker
+                        SelectedDate="{Binding SearchData.Id}"/>
+                </StackPanel>
+                
                 <StackPanel Width="170" Margin="0 0 5 0">
                     <Label
                         HorizontalAlignment="Left"
@@ -80,7 +86,7 @@
                         SelectedValue="{Binding SearchData.TicketStatusCode}"/>
                 </StackPanel>
 
-                <StackPanel Width="170" Margin="0 0 5 0">
+                <!--<StackPanel Width="170" Margin="0 0 5 0">
                     <Label
                         HorizontalAlignment="Left"
                         Content="Método procesamiento:"/>
@@ -102,7 +108,7 @@
                         SelectedValuePath="Value"
                         ItemsSource="{Binding Actions}"
                         SelectedValue="{Binding SearchData.TypeAction}"/>
-                </StackPanel>
+                </StackPanel>-->
 
                 <StackPanel Width="170" Margin="0 0 5 0">
                     <Label
@@ -154,7 +160,7 @@
                     <DataGridTextColumn
                         IsReadOnly="True"
                         Width="Auto"
-                        Header="Fecha"
+                        Header="Fecha envío"
                         CellStyle="{DynamicResource CellTextCenter}"
                         Binding="{Binding Id, StringFormat='dd/MM/yyyy HH:mm:ss'}"/>
                     
@@ -193,7 +199,7 @@
                         CellStyle="{DynamicResource CellTextCenter}"
                         Binding="{Binding TicketStatusCode}"/>
 
-                    <DataGridTextColumn
+                    <!--<DataGridTextColumn
                         IsReadOnly="True"
                         Width="Auto"
                         Header="Método procedimiento"
@@ -205,7 +211,7 @@
                         Width="Auto"
                         Header="Acción realizada"
                         CellStyle="{DynamicResource CellTextCenter}"
-                        Binding="{Binding TypeAction, Converter={StaticResource TypeActionToTextConverter}}"/>
+                        Binding="{Binding TypeAction, Converter={StaticResource TypeActionToTextConverter}}"/>-->
 
                     <DataGridTextColumn
                         IsReadOnly="True"
@@ -217,14 +223,14 @@
                     <DataGridTextColumn
                         IsReadOnly="True"
                         Width="Auto"
-                        Header="Código respuesta API"
+                        Header="Código respuesta"
                         CellStyle="{DynamicResource CellTextCenter}"
                         Binding="{Binding ApiResponseCode}"/>
 
                     <DataGridTextColumn
                         IsReadOnly="True"
                         Width="Auto"
-                        Header="Mensaje bitácora"
+                        Header="Mensaje"
                         Binding="{Binding Message}"/>
                 </DataGrid.Columns>
             </DataGrid>

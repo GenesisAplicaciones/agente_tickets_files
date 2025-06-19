@@ -48,7 +48,7 @@
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="375"/>
+                        <ColumnDefinition Width="345"/>
                         <ColumnDefinition Width="5"/>
                         <ColumnDefinition Width="50"/>
                     </Grid.ColumnDefinitions>
@@ -116,7 +116,7 @@
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="430"/>
+                        <ColumnDefinition Width="400"/>
                     </Grid.ColumnDefinitions>
 
                     <Label
@@ -164,7 +164,7 @@
                         Grid.Row="6"
                         Grid.Column="0"
                         HorizontalAlignment="Right"
-                        Content="Serie ubicación:"/>
+                        Content="Serie ubicación (opcional):"/>
                     <TextBox
                         Grid.Row="6"
                         Grid.Column="1"

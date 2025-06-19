@@ -8,6 +8,7 @@ using System;
 using System.Linq;
 using ACTools.NetFramework.Exceptions;
 using AgenteTickets.AppDataBase.Models;
+using ACTools.NetFramework.Files;
 
 namespace AgenteTickets.ClientData.AlohaXML.DAO
 {
@@ -46,13 +47,13 @@ namespace AgenteTickets.ClientData.AlohaXML.DAO
 
                 try
                 {
-                    Transacction transacction = Converter.XMLToObject<Transacction>(fileInfo.FullName);
+                    Transacction transacction = FileConvert.XMLToObject<Transacction>(fileInfo.FullName);
 
                     dataInfo.NewFileName = $"{serie}{transacction.DOB:yyyyMMdd}{transacction.CheckNumber}{fileExtension}";
 
                     if (!transacction.IsClose)
                     {
-                        throw new AppException("IsClose", "Ticket no cerrado.", 701);
+                        throw new AppException("IsClose", "Ticket no cerrado.", 601);
                     }
 
                     Dictionary<string, decimal> paymentsTicket = new Dictionary<string, decimal>();
@@ -118,8 +119,8 @@ namespace AgenteTickets.ClientData.AlohaXML.DAO
                 catch (Exception ex)
                 {
                     dataInfo.NewFileName = fileInfo.Name;
-                    dataInfo.Code = 700;
-                    dataInfo.Message = $"Formato incorrecto. {ex.GetBaseException().Message}";
+                    dataInfo.Code = 600;
+                    dataInfo.Message = $"Formato de archivo incorrecto. {ex.GetBaseException().Message}";
                 }
 
                 result.Add(dataInfo);

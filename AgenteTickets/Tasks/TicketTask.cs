@@ -46,6 +46,7 @@ namespace AgenteTickets.Tasks
                 if (data[i].Code.HasValue)
                 {
                     TicketDAO.Move(data[i], AppInstances.FileReaderConfig.ResponsePath);
+                    _ = TicketLogDAO.Create(data[i].Code, data[i].Message, TypeMethod.AUTOMATIC, TypeAction.LOAD);
                     log.Error($"APP: {data[i].Code}. {data[i].Message}");
                     continue;
                 }
@@ -54,11 +55,6 @@ namespace AgenteTickets.Tasks
 
                 SelfbillingResponse<TicketMetadata> response = TicketService.UploadTicket(ticket);
                 _ = TicketLogDAO.Create(ticket, response, TypeMethod.AUTOMATIC, TypeAction.LOAD);
-
-                if (!response.Code.HasValue)
-                {
-                    log.Info($"Ticket agregado a pendientes. Serie: {ticket.Serie}, Folio: {ticket.Folio}, Fecha: {ticket.TicketDate}, Importe: {ticket.Amount}.");
-                }
 
                 data[i].Code = response.Code;
                 TicketDAO.Move(data[i], AppInstances.FileReaderConfig.ResponsePath);
@@ -96,11 +92,6 @@ namespace AgenteTickets.Tasks
                 SelfbillingResponse<TicketMetadata> response = TicketService.CancelTicket(ticket);
                 _ = TicketLogDAO.Create(ticket, response, TypeMethod.AUTOMATIC, TypeAction.CANCELLATION);
 
-                if (!response.Code.HasValue)
-                {
-                    log.Info($"Ticket agregado a pendientes. Serie: {ticket.Serie}, Folio: {ticket.Folio}, Fecha: {ticket.TicketDate}, Importe: {ticket.Amount}.");
-                }
-
                 data[i].Code = response.Code;
                 TicketDAO.Move(data[i], AppInstances.FileReaderConfig.ResponsePath);
             }
@@ -129,20 +120,22 @@ namespace AgenteTickets.Tasks
                 if (data[i].Code.HasValue)
                 {
                     TicketDAO.Move(data[i], AppInstances.FileReaderConfig.ResponsePath);
+                    _ = TicketLogDAO.Create(data[i].Code, data[i].Message, TypeMethod.AUTOMATIC, TypeAction.LOAD);
                     log.Error($"APP: {data[i].Code}. {data[i].Message}");
                     continue;
                 }
 
                 Ticket ticket = data[i].Ticket;
-
                 SelfbillingResponse<TicketMetadata> response = TicketService.UploadTicket(ticket);
-                _ = TicketLogDAO.Create(ticket, response, TypeMethod.AUTOMATIC, TypeAction.LOAD);
 
-                if (response.Code.HasValue)
+                if (!response.Code.HasValue)
                 {
-                    data[i].Code = response.Code;
-                    TicketDAO.Move(data[i], AppInstances.FileReaderConfig.ResponsePath);
+                    continue;
                 }
+
+                _ = TicketLogDAO.Create(ticket, response, TypeMethod.AUTOMATIC, TypeAction.LOAD);
+                data[i].Code = response.Code;
+                TicketDAO.Move(data[i], AppInstances.FileReaderConfig.ResponsePath);
             }
 
             log.Info($"Tiempo: {timeMeasure.Elapsed:G}");

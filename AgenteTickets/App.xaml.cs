@@ -7,6 +7,7 @@ using log4net;
 using System;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
@@ -73,20 +74,44 @@ namespace AgenteTickets
                         Environment.Exit(0);
                     }
 
-                    if (!AppInstances.PaymentMethodsConfig.Any())
+                    if (!Directory.Exists(AppInstances.FileReaderConfig.Path))
                     {
-                        //
+                        splash.Dispatcher.Invoke(() =>
+                        {
+                            splash.Hide();
+                            _ = MessageBox.Show("La ruta de ubación para lectura de archivos no existe. Configure una ruta valida para que la aplicación se pueda ejecutar.", "Agente tickets", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                            bool saved = new ConfigurationWindow().ShowDialog() ?? false;
+
+                            if (!saved)
+                            {
+                                log.Info("Configuración omitida por el usuario (Ubicación archivos).");
+                                Environment.Exit(0);
+                            }
+
+                            splash.Show();
+                        });
+                    }
+
+                    if (AppInstances.FileReaderConfig.FileType == ClientData.Enums.FileType.AlohaXML && !AppInstances.PaymentMethodsConfig.Any())
+                    {
+                        Current.Dispatcher.Invoke(() =>
+                        {
+                            splash.Hide();
+                            _ = new PaymentMethodConfigWindow().ShowDialog() ?? false;
+                            splash.Show();
+                        });
                     }
 
                     if (make)
                     {
                         try
                         {
-                            //TicketTask.UploadTickets(splash);
+                            TicketTask.UploadTickets(splash);
                         }
                         catch (SqlException ex)
                         {
-                            _ = MessageBox.Show("Se produjo un error al consultar los tickets. Revisa la configuración de la conexión a la base de datos.", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+                            _ = MessageBox.Show("Se produjo un error al consultar los tickets. Revisa la configuración de la aplicación.", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
                             log.Error(ex);
                         }
                     }
@@ -99,6 +124,10 @@ namespace AgenteTickets
 
                     notification = new NotifyApp(icon: AgenteTickets.Properties.Resources.app);
                     notification.AddOption("Configuración", Configuration_Click);
+                    if (AppInstances.FileReaderConfig.FileType == ClientData.Enums.FileType.AlohaXML)
+                    {
+                        notification.AddOption("Formas de pago", PaymentMethodConfig_Click);
+                    }
                     notification.AddOption("Bitácora de tickets", TicketLog_Click);
                     notification.AddSeparator();
                     notification.AddOption("Apagar", Shutdown_Click);
@@ -129,6 +158,16 @@ namespace AgenteTickets
             }
 
             _ = new ConfigurationWindow().ShowDialog();
+        }
+
+        private void PaymentMethodConfig_Click(object sender, EventArgs e)
+        {
+            if (WindowExist<PaymentMethodConfigWindow>())
+            {
+                return;
+            }
+
+            _ = new PaymentMethodConfigWindow().ShowDialog();
         }
 
         private void TicketLog_Click(object sender, EventArgs e)

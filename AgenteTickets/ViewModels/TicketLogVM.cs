@@ -166,20 +166,26 @@ namespace AgenteTickets.ViewModels
                 },
                 new SelectOption<int?>
                 {
-                    Text = "601	Sin datos para procesar",
-                    Value = 601,
+                    Text = "600 Formato de archivo incorrecto. [Mensaje específico]",
+                    Value = 600,
                 },
+                new SelectOption<int?>
+                {
+                    Text = "601 Ticket no cerrado",
+                    Value = 601
+                }
             };
 
             SearchData = new TicketLog
             {
+                Id = DateTime.Today,
                 TicketSerie = "",
                 TicketFolio = "",
-                TicketDate = DateTime.Today,
+                TicketDate = null,
                 TicketAmount = null,
                 TicketStatusCode = "",
-                TypeMethod = TypeMethod.NONE,
-                TypeAction = TypeAction.NONE,
+                TypeMethod = TypeMethod.AUTOMATIC,
+                TypeAction = TypeAction.LOAD,
                 StatusAction = StatusAction.NONE,
                 ApiResponseCode = -1,
                 Message = "",
@@ -198,6 +204,7 @@ namespace AgenteTickets.ViewModels
                 {
                     Series.AddRange(TicketLogDAO.GetSeries());
                     StatusCodes.AddRange(TicketLogDAO.GetTicketStatusCodes());
+                    TicketLogs = TicketLogDAO.List(SearchData);
                 }
                 catch (Exception ex)
                 {

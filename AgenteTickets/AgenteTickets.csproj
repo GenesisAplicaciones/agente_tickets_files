@@ -208,7 +208,6 @@
     <Compile Include="ClientData\Enums\FileType.cs" />
     <Compile Include="ClientData\Models\DataInfo.cs" />
     <Compile Include="ClientData\TicketDAO.cs" />
-    <Compile Include="Utils\Converter.cs" />
     <Compile Include="Enums\ConfigFormSection.cs" />
     <Compile Include="Jobs\Job.cs" />
     <Compile Include="Jobs\UploadCancellationsJob.cs" />
@@ -236,6 +235,7 @@
     <Compile Include="Utils\JWT.cs" />
     <Compile Include="Utils\Security.cs" />
     <Compile Include="ViewModels\ConfigurationVM.cs" />
+    <Compile Include="ViewModels\PaymentMethodConfigVM.cs" />
     <Compile Include="ViewModels\TicketLogVM.cs" />
     <Compile Include="Views\ConfigurationWindow.xaml.cs">
       <DependentUpon>ConfigurationWindow.xaml</DependentUpon>

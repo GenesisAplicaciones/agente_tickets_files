@@ -78,7 +78,8 @@ namespace AgenteTickets.Persistence
             UploadCancellationsJob.Change(SelfbillingConfig.TimeLoadCancellations);
 
             UploadPendingTicketsJob = new UploadPendingTicketsJob();
-            UploadPendingTicketsJob.Change(new TimeSpan(0, 10, 0), new TimeSpan(0, 10, 0));
+            //UploadPendingTicketsJob.Change(new TimeSpan(0, 10, 0), new TimeSpan(0, 10, 0));
+            UploadPendingTicketsJob.Change(SelfbillingConfig.LoadIntervalTickets, SelfbillingConfig.LoadIntervalTickets);
 
             log.Info("Jobs iniciados.");
 
